@@ -10,3 +10,5 @@ export const registerValidation = [
     }),
     body('avatarUrl').optional().isURL(),
 ];
+
+export const loginValidation = {};
