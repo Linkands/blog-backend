@@ -70,3 +70,65 @@ export const createPost = async (req, res) => {
         });
     }
 };
+
+export const removePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        PostModel.findByIdAndRemove(
+            {
+                _id: postId,
+            },
+            (err, doc) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'couldnt remove post',
+                    });
+                }
+
+                if (!doc) {
+                    return res.status(404).json({
+                        message: 'Post not found',
+                    });
+                }
+
+                res.json({
+                    success: true,
+                });
+            }
+        );
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'couldnt get all posts',
+        });
+    }
+};
+
+export const editPost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        await PostModel.updateOne(
+            {
+                _id: postId,
+            },
+            {
+                title: req.body.title,
+                text: req.body.text,
+                tags: req.body.tags,
+                images: req.body.images,
+            }
+        );
+
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'couldnt edit post',
+        });
+    }
+};
